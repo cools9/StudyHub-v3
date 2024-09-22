@@ -3,8 +3,6 @@ from supabase import create_client, Client
 import os
 from functools import wraps
 import random
-import webview
-import threading
 import os
 
 import api_keys
