@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}My App{% endblock %}</title>
+
+        <style>
+            body {
+                background-color: #000; /* Black background */
+                font-family: "Poppins", sans-serif; /* Poppins font */
+                color: #fff; /* White text for contrast */
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Navbar */
+            .navbar {
+                background-color: #333;
+                padding: 10px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+            }
+
+            /* Three-dot menu icon */
+            .menu-icon {
+                font-size: 24px;
+                cursor: pointer;
+                color: white;
+                margin-right: 20px;
+            }
+
+            /* Side menu (hidden by default) */
+            .side-menu {
+                position: fixed;
+                top: 0;
+                left: -250px; /* Initially hidden off-screen */
+                width: 250px;
+                height: 100%;
+                background-color: #333;
+                overflow-x: hidden;
+                transition: 0.5s;
+                padding-top: 60px;
+                z-index: 1000;
+            }
+
+            .side-menu a {
+                padding: 10px 20px;
+                text-decoration: none;
+                font-size: 18px;
+                color: white;
+                display: block;
+                transition: 0.3s;
+            }
+
+            .side-menu a:hover {
+                background-color: #575757;
+            }
+
+            .side-menu .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                font-size: 30px;
+                cursor: pointer;
+                color: white;
+            }
+
+            /* Main content */
+            .container {
+                padding: 20px;
+            }
+
+            footer {
+                text-align: center;
+                margin-top: 20px;
+                color: #aaa;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Navbar -->
+        <nav class="navbar">
+            <!-- Three-dot menu icon -->
+            <span class="menu-icon" onclick="openMenu()">&#9776;</span>
+        </nav>
+
+        <!-- Side Menu -->
+        <div id="sideMenu" class="side-menu">
+            <a href="javascript:void(0)" class="close-btn" onclick="closeMenu()"
+                >&times;</a
+            >
+            <a href="{{ url_for('main') }}">Home</a>
+            <a href="{{ url_for('my_posts') }}">My Notes</a>
+            <a href="{{ url_for('session_info') }}">Sessions</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+
+        <!-- Main content -->
+        <div class="container">{% block content %} {% endblock %}</div>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2024 My App</p>
+        </footer>
+
+        <!-- JavaScript for opening and closing the side menu -->
+        <script>
+            function openMenu() {
+                document.getElementById("sideMenu").style.left = "0"; // Slide in
+            }
+
+            function closeMenu() {
+                document.getElementById("sideMenu").style.left = "-250px"; // Slide out
+            }
+        </script>
+    </body>
+</html>

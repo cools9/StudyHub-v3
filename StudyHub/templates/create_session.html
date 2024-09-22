@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Create Session</title>
+    </head>
+    <body>
+        <div class="centered-container">
+            <form
+                id="create-session-form"
+                action="{{ url_for('create_session') }}"
+                method="post"
+            >
+                <label for="session_name">Session Name</label>
+                <input
+                    type="text"
+                    id="session_name"
+                    name="session_name"
+                    required
+                />
+                <button type="submit">CREATE SESSION</button>
+            </form>
+
+            <div id="message" style="display: none; margin-top: 20px">
+                <p id="code-message"></p>
+                <button id="copy-code-button">Copy Code</button>
+            </div>
+        </div>
+
+        <style>
+            /* Keep existing styles */
+            .centered-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                inset: 0;
+                width: 400px;
+                height: 250px;
+                margin: auto;
+                background-color: #333; /* Dark background for container */
+                border: 1px solid #444; /* Slightly lighter border */
+                padding: 20px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Darker shadow for contrast */
+                border-radius: 12px;
+                text-align: center;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            label {
+                margin-bottom: 5px;
+                text-align: left;
+                color: #fff;
+            }
+
+            input[type="text"] {
+                padding: 10px;
+                border: 1px solid #666;
+                border-radius: 4px;
+                margin-bottom: 15px;
+                font-size: 16px;
+                width: 100%;
+            }
+
+            button {
+                padding: 10px;
+                background-color: #4caf50;
+                color: #ffffff;
+                border: none;
+                border-radius: 4px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            button:hover {
+                background-color: #45a049;
+            }
+
+            #copy-code-button {
+                background-color: #007bff;
+            }
+
+            #copy-code-button:hover {
+                background-color: #0056b3;
+            }
+        </style>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Get the flash message and session code from Flask context
+                const flashMessage = "{{ flash_message }}";
+                const code = "{{ session_code }}";
+
+                if (flashMessage && code) {
+                    // Display the message
+                    document.getElementById("message").style.display = "block";
+                    document.getElementById("code-message").innerText =
+                        `This is the code: ${code}. Use it to invite your friends.`;
+
+                    // Copy the code to the clipboard and redirect when the button is clicked
+                    document
+                        .getElementById("copy-code-button")
+                        .addEventListener("click", function () {
+                            navigator.clipboard
+                                .writeText(code)
+                                .then(() => {
+                                    alert("Session code copied to clipboard!");
+                                    window.location.href =
+                                        "{{ url_for('session_join') }}"; // Redirect to join-session.html
+                                })
+                                .catch((err) => {
+                                    console.error("Failed to copy code: ", err);
+                                });
+                        });
+                }
+            });
+        </script>
+    </body>
+</html>
